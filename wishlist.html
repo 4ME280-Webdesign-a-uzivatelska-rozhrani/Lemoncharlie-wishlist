@@ -3,19 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <title>Wishlist</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+    .gift {
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 20px 0;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    img {
+      width: 150px;
+      height: auto;
+      border-radius: 8px;
+    }
+    .details {
+      flex-grow: 1;
+    }
+    input {
+      padding: 5px;
+      margin-right: 5px;
+    }
+    button {
+      padding: 6px 10px;
+    }
+  </style>
 </head>
 <body>
-  <div id="content">Načítám wishlist...</div>
+  <h1>Můj wishlist 🎁</h1>
+  <div id="wishlist"></div>
 
   <script>
-    fetch("https://raw.githubusercontent.com/Lemoncharlie/Lemoncharlie-wishlist/main/wishlist.md")
-      .then(response => response.text())
-      .then(text => {
-        document.getElementById("content").innerHTML = marked.parse(text);
-      });
-  </script>
+    const BIN_ID = "6839e7a48960c979a5a32a96";
+    const API_KEY = "$2a$10$U0fbhpDCMHsyiKNrcfY88e1.syR3bMUj7Y0JK/oYZSrZjaKlAiZm6";
+    const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
-  <!-- Přidej knihovnu marked.js pro převod markdownu -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    let gifts = [];
+
+    async function loadGifts() {
+      try {
+        const response = await fetch(API_URL, {
+          headers: { "X-Master-Key": API_KEY }
+        });
+        const data = await response.json();
+        gifts = data.record;
+        renderGifts();
+      } catch (err) {
+        document.getElementById("wishlist").innerText = "Chyba při načítání dárků.";
+        console.error(err);
+      }
+    }
+
+    function renderGifts() {
+      const container = document.getElementById("wishlist");
+      container.innerHTML = "";
+
+      gifts.forEach((gift, index) => {
+        const div = document.createElement("div");
+        div.className = "gift";
+
+        div.innerHTML = `
+          <img src="${gift.obrazek}" alt="${gift.nazev}">
+          <div class="details">
+            <h3><a href="${gift.odkaz}" target="_blank">${gift.nazev}</a></h3>
+            <p><strong>Cena:</strong> ${gift.cena}</p>
+            <p><strong>Zamluvil:</strong> <span id="claimer-${index}">${gift.zamluvil || "—"}</span></p>
+            <input type="text" placeholder="Tvoje jméno" id="input-${index}">
+            <button onclick="claimGift(${index})">Zamluvit</button>
+          </div>
+        `;
+
+        container.appendChild(div);
+      });
+    }
+
+    async function claimGift(index) {
+      const nameInput = document.getElementById(`input-${index}`);
+      const name = nameInput.value.trim();
+      if (!name) return alert("Zadej jméno, prosím.");
+
+      gifts[index].zamluvil = name;
+
+      try {
+        await fetch(API_URL, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key": API_KEY
+          },
+          body: JSON.stringify(gifts)
+        });
+        document.getElementById(`claimer-${index}`).innerText = name;
+        nameInput.value = "";
+        alert("Dárek zamluven!");
+      } catch (err) {
+        alert("Nepodařilo se uložit.");
+        console.error(err);
+      }
+    }
+
+    loadGifts();
+  </script>
 </body>
 </html>
