@@ -10,7 +10,7 @@
 
 - **Porsche 911 GT3 RS**
   - [Odkaz](https://configurator.porsche.com/cs-CZ/mode/model/992850?options=Q1K.6NN.QH1.VL0.A8G.2W6.1N3.1X2.D2Q.8T1.2C5.K8C.3FF.VW4.1XQ.9WT.4UF.QJ6.5MK.0P9.0I1.8LH.2V1.3QT.1G8.1P0.5KS.9JA.6E1.7K3.QQ0.G1C.9P3.6FW.9VK.1T2.5XC.0TC.QV3.IW3.4L2.7UG.7M3.0NB.0N5.6F4.9AD.8IT.GH3.FM7.1BV.VF2.7AK.6Q5.FZ0.E1T.J2B.6XA.2D0.8VG.UI2.1LX.1NX.0UD.56Q.UD1.KA2.24931.74.89)
-  - Obrázek: https://pictures.porsche.com/rtt/iris?COSY-EU-100-1711coMvsi60AAt5FwcmBEgA4qP8iBUDxPE3Cb9pNXkBuNYdMGF4tl3U0%25z8rMHIspbWvanYb%255y%25oq%25vSTmjMXD4qAZeoNBPUSfUx4RmHlCgI7lDHx7e2HpMK1UzQKjwVbsqYSYu5yPewdszhRc21alqA7fQIsaOJUPYwghTBsN5xsy2dioCFFWQD9AzXCKuAIKyDUZT6Ot5FTmnEBc6XdGj
+  - Obrázek: https://www.autanet.cz/artphotos/nove-porsche-911-gt3-rs-pohani-atmosfericky-sestivalec-o-vykonu-525-koni-id4629_03.jpg
   - Cena: 7 935 839 Kč
 
 - **Mazda RX-7 SPIRIT R Type A**
@@ -24,13 +24,13 @@
   - Cena: 70 990 Kč
 
 - **AMD Ryzen 9 9950X3D**
-  - [Odkaz](https://www.alza.cz/kingston-fury-96gb-kit-6400mt-s-ddr5-cl32-renegade-rgb-xmp-d10868165.htm)
-  - Obrázek: https://image.alza.cz/products/DErr96b64x/DErr96b64x.jpg?width=800&height=800
+  - [Odkaz](https://www.alza.cz/amd-ryzen-9-9950x3d-d12838127.htm)
+  - Obrázek: https://image.alza.cz/products/BD750m9c/BD750m9c.jpg?width=800&height=800
   - Cena: 19 790 Kč
 
 - **Kingston FURY 96GB KIT 6400MT/s DDR5 CL32 Renegade RGB XMP**
-  - [Odkaz](https://www.example.com/ps5)
-  - Obrázek: https://picsum.photos/300/200?random=1
+  - [Odkaz](https://www.alza.cz/kingston-fury-96gb-kit-6400mt-s-ddr5-cl32-renegade-rgb-xmp-d10868165.htm)
+  - Obrázek: https://image.alza.cz/products/DErr96b64x/DErr96b64x.jpg?width=800&height=800
   - Cena: 10 984 Kč
 
 - **32" GIGABYTE AORUS FO32U2P**
