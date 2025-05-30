@@ -133,7 +133,7 @@
           <img src="${item.obrazek}" alt="${item.nazev}" />
           <div class="gift-info">
             <a href="${item.odkaz}" target="_blank">${item.nazev}</a>
-            <p class="price">${item.cena}</p>
+            <p class="price">${Number(item.cena).toLocaleString('cs-CZ')} Kč</p>
             <div class="reserver-section">
               <input class="input-reserver" type="text" placeholder="Zamlouvá: ${item.zamluvil || ""}" id="reserver-${index}" />
               <button class="btn-save" onclick="saveReserver(${index})">💾 Uložit</button>
