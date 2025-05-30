@@ -1,115 +1,157 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wishlist</title>
   <style>
     body {
-      font-family: sans-serif;
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 2rem;
     }
-    .gift {
-      border: 1px solid #ccc;
+
+    h1 {
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 2rem;
+    }
+
+    .wishlist-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .gift-card {
+      background-color: #1e1e1e;
       border-radius: 12px;
-      padding: 15px;
-      margin: 20px 0;
-      display: flex;
-      gap: 20px;
-      align-items: center;
+      padding: 1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease;
     }
-    img {
-      width: 150px;
+
+    .gift-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .gift-card img {
+      width: 100%;
       height: auto;
       border-radius: 8px;
+      object-fit: cover;
     }
-    .details {
-      flex-grow: 1;
+
+    .gift-info {
+      margin-top: 0.75rem;
     }
-    input {
-      padding: 5px;
-      margin-right: 5px;
+
+    .gift-info a {
+      color: #90caf9;
+      text-decoration: none;
+      font-weight: bold;
     }
-    button {
-      padding: 6px 10px;
+
+    .gift-info a:hover {
+      text-decoration: underline;
+    }
+
+    .price {
+      font-weight: bold;
+      color: #a5d6a7;
+      margin: 0.5rem 0;
+    }
+
+    .input-reserver {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      border-radius: 6px;
+      border: none;
+      background-color: #2e2e2e;
+      color: white;
+    }
+
+    .btn-save {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      width: 100%;
+      background-color: #1e88e5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-save:hover {
+      background-color: #1565c0;
     }
   </style>
 </head>
 <body>
-  <h1>Můj wishlist 🎁</h1>
-  <div id="wishlist"></div>
+  <h1>🎁 Můj Wishlist</h1>
+  <div class="wishlist-container" id="wishlist"></div>
 
   <script>
     const BIN_ID = "6839e7a48960c979a5a32a96";
-    const API_KEY = "$2a$10$U0fbhpDCMHsyiKNrcfY88e1.syR3bMUj7Y0JK/oYZSrZjaKlAiZm6";
-    const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+    const API_KEY = "X-MASTER-KEY: $2a$10$U0fbhpDCMHsyiKNrcfY88e1.syR3bMUj7Y0JK/oYZSrZjaKlAiZm6";
 
-    let gifts = [];
+    async function loadWishlist() {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: {
+          "X-Master-Key": API_KEY
+        }
+      });
+      const data = await res.json();
+      const wishlist = data.record;
 
-    async function loadGifts() {
-      try {
-        const response = await fetch(API_URL, {
-          headers: { "X-Master-Key": API_KEY }
-        });
-        const data = await response.json();
-        gifts = data.record;
-        renderGifts();
-      } catch (err) {
-        document.getElementById("wishlist").innerText = "Chyba při načítání dárků.";
-        console.error(err);
-      }
-    }
-
-    function renderGifts() {
       const container = document.getElementById("wishlist");
       container.innerHTML = "";
 
-      gifts.forEach((gift, index) => {
-        const div = document.createElement("div");
-        div.className = "gift";
+      wishlist.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "gift-card";
 
-        div.innerHTML = `
-          <img src="${gift.obrazek}" alt="${gift.nazev}">
-          <div class="details">
-            <h3><a href="${gift.odkaz}" target="_blank">${gift.nazev}</a></h3>
-            <p><strong>Cena:</strong> ${gift.cena}</p>
-            <p><strong>Zamluvil:</strong> <span id="claimer-${index}">${gift.zamluvil || "—"}</span></p>
-            <input type="text" placeholder="Tvoje jméno" id="input-${index}">
-            <button onclick="claimGift(${index})">Zamluvit</button>
+        card.innerHTML = `
+          <img src="${item.obrazek}" alt="${item.nazev}" />
+          <div class="gift-info">
+            <a href="${item.odkaz}" target="_blank">${item.nazev}</a>
+            <p class="price">${item.cena}</p>
+            <input class="input-reserver" type="text" placeholder="Zamlouvá: ${item.zamluvil || ""}" id="reserver-${index}" />
+            <button class="btn-save" onclick="saveReserver(${index})">💾 Uložit</button>
           </div>
         `;
 
-        container.appendChild(div);
+        container.appendChild(card);
       });
+
+      window.currentWishlist = wishlist;
     }
 
-    async function claimGift(index) {
-      const nameInput = document.getElementById(`input-${index}`);
-      const name = nameInput.value.trim();
-      if (!name) return alert("Zadej jméno, prosím.");
+    async function saveReserver(index) {
+      const input = document.getElementById(`reserver-${index}`);
+      const name = input.value.trim();
+      if (!name) return;
 
-      gifts[index].zamluvil = name;
+      window.currentWishlist[index].zamluvil = name;
 
-      try {
-        await fetch(API_URL, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": API_KEY
-          },
-          body: JSON.stringify(gifts)
-        });
-        document.getElementById(`claimer-${index}`).innerText = name;
-        nameInput.value = "";
-        alert("Dárek zamluven!");
-      } catch (err) {
-        alert("Nepodařilo se uložit.");
-        console.error(err);
-      }
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": API_KEY
+        },
+        body: JSON.stringify(window.currentWishlist)
+      });
+
+      alert("Zamluveno!");
+      loadWishlist();
     }
 
-    loadGifts();
+    loadWishlist();
   </script>
 </body>
 </html>
