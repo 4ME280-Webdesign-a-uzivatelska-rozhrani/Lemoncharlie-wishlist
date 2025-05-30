@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lemoncharlie Wishlist</title>
+  <title>Wishlist</title>
   <style>
     body {
       background-color: #121212;
@@ -26,11 +26,15 @@
     }
 
     .gift-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       background-color: #1e1e1e;
       border-radius: 12px;
       padding: 1rem;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
       transition: transform 0.2s ease;
+      height: 100%;
     }
 
     .gift-card:hover {
@@ -45,6 +49,9 @@
     }
 
     .gift-info {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
       margin-top: 0.75rem;
     }
 
@@ -52,6 +59,7 @@
       color: #90caf9;
       text-decoration: none;
       font-weight: bold;
+      margin-bottom: 0.5rem;
     }
 
     .gift-info a:hover {
@@ -61,7 +69,13 @@
     .price {
       font-weight: bold;
       color: #a5d6a7;
-      margin: 0.5rem 0;
+      margin-bottom: auto;
+    }
+
+    .reserver-section {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
     }
 
     .input-reserver {
@@ -120,8 +134,10 @@
           <div class="gift-info">
             <a href="${item.odkaz}" target="_blank">${item.nazev}</a>
             <p class="price">${item.cena}</p>
-            <input class="input-reserver" type="text" placeholder="Zamlouvá: ${item.zamluvil || ""}" id="reserver-${index}" />
-            <button class="btn-save" onclick="saveReserver(${index})">💾 Uložit</button>
+            <div class="reserver-section">
+              <input class="input-reserver" type="text" placeholder="Zamlouvá: ${item.zamluvil || ""}" id="reserver-${index}" />
+              <button class="btn-save" onclick="saveReserver(${index})">💾 Uložit</button>
+            </div>
           </div>
         `;
 
